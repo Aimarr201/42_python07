@@ -1,5 +1,6 @@
 
 from abc import ABC, abstractmethod
+from typing import cast
 
 from ex0.pokemon import Pokemon
 from ex1.capabilities import HealCapability, TransformCapability
@@ -32,14 +33,16 @@ class AggressiveStrategy(BattleStrategy):
         return isinstance(pokemon, TransformCapability)
 
     def act(self, pokemon: Pokemon) -> None:
-        if not isinstance(pokemon, TransformCapability):
+        if not self.is_valid(pokemon):
             raise InvalidStrategyError(
-                f"Invalid Pokemon '{pokemon.name}'"
-                f" for this aggressive strategy"
+               f"Invalid Pokemon '{pokemon.name}' for this aggressive strategy"
             )
-        print(pokemon.transform())
+
+        poke = cast(TransformCapability, pokemon)
+
+        print(poke.transform())
         print(pokemon.attack())
-        print(pokemon.revert())
+        print(poke.revert())
 
 
 class DefensiveStrategy(BattleStrategy):
@@ -47,10 +50,12 @@ class DefensiveStrategy(BattleStrategy):
         return isinstance(pokemon, HealCapability)
 
     def act(self, pokemon: Pokemon) -> None:
-        if not isinstance(pokemon, HealCapability):
+        if not self.is_valid(pokemon):
             raise InvalidStrategyError(
-                f"Invalid Pokemon '{pokemon.name}'"
-                f" for this defensive strategy"
+                f"Invalid Pokemon '{pokemon.name}' for this defensive strategy"
             )
+
+        poke = cast(HealCapability, pokemon)
+
         print(pokemon.attack())
-        print(pokemon.heal())
+        print(poke.heal())
