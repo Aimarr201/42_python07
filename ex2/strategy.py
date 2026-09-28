@@ -32,9 +32,10 @@ class AggressiveStrategy(BattleStrategy):
         return isinstance(pokemon, TransformCapability)
 
     def act(self, pokemon: Pokemon) -> None:
-        if not self.is_valid(pokemon):
+        if not isinstance(pokemon, TransformCapability):
             raise InvalidStrategyError(
-               f"Invalid Pokemon '{pokemon.name}' for this aggressive strategy"
+                f"Invalid Pokemon '{pokemon.name}'"
+                f" for this aggressive strategy"
             )
         print(pokemon.transform())
         print(pokemon.attack())
@@ -46,9 +47,10 @@ class DefensiveStrategy(BattleStrategy):
         return isinstance(pokemon, HealCapability)
 
     def act(self, pokemon: Pokemon) -> None:
-        if not self.is_valid(pokemon):
+        if not isinstance(pokemon, HealCapability):
             raise InvalidStrategyError(
-                f"Invalid Pokemon '{pokemon.name}' for this defensive strategy"
+                f"Invalid Pokemon '{pokemon.name}'"
+                f" for this defensive strategy"
             )
         print(pokemon.attack())
         print(pokemon.heal())
